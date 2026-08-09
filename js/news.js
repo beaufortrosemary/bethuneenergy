@@ -36,9 +36,8 @@
     var h3 = el("h3");
     var titleLink = el("a", null, item.title);
     titleLink.href = href;
-    if (item.link_type === "external") {
-      titleLink.rel = "noopener";
-    }
+    titleLink.target = "_blank";
+    titleLink.rel = "noopener";
     h3.appendChild(titleLink);
     body.appendChild(h3);
 
@@ -50,7 +49,8 @@
     var action = el("a", null,
       item.link_type === "external" ? "See the story" : "Download PDF");
     action.href = href;
-    if (item.link_type === "external") action.rel = "noopener";
+    action.target = "_blank";
+    action.rel = "noopener";
     links.appendChild(action);
     body.appendChild(links);
 
