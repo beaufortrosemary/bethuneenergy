@@ -18,8 +18,6 @@ Static site for bethuneenergy.com. Netlify hosts the site and deploys it automat
    - On GitHub, go to Settings, then Collaborators, and invite Dylan by email so he can edit through Pages CMS.
    - Once he accepts, send him the Pages CMS link for the repository.
 
-The old GitHub issue-form workflow files are still in `.github/` for now, but Pages CMS is the way to edit the newsroom going forward.
-
 ## How Dylan adds an item
 
 1. Open the Pages CMS link and sign in with GitHub.
@@ -66,6 +64,6 @@ Edit `news/news.json`: correct the fields, or delete the entry's block, and comm
 
 ## Notes
 
-- The top entry in `news/news.json` is a clearly labeled DEMO item with a working sample PDF (`downloads/press/demo-news-item.pdf`), there so you can test the layout and the Download PDF button. Delete it (and its PDF) before launch.
-- The other three entries in `news/news.json` are placeholders with no PDFs behind them. Replace them with the real releases before launch, or empty the `items` array to `[]`.
-- Category options live in `.pages.yml` (the News editor) and, for the older issue form, in `.github/ISSUE_TEMPLATE/news-item.yml`. The site itself renders whatever category string an entry carries.
+- `news/news.json` currently holds a single clearly labeled DEMO item with a working sample PDF (`downloads/press/demo-news-item.pdf`), there so you can test the layout and the Download PDF button. Delete it (and its PDF) before launch, then add the real releases.
+- If every item is removed, the newsroom simply shows "No announcements have been posted yet." An empty or `{ "items": [] }` file is handled gracefully.
+- Category options live in `.pages.yml` (the News editor). The site itself renders whatever category string an entry carries.
