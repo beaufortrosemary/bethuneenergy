@@ -39,14 +39,24 @@ content:
           - name: link_type
             label: Link type
             type: select
+            default: pdf
             options:
               values:
-                - pdf
-                - external
+                - { label: PDF file, value: pdf }
+                - { label: Link to another website, value: external }
           - name: url
-            label: URL
-            type: string
+            label: PDF file
+            type: file
+            options:
+              extensions: [pdf]
             description: >-
-              For a PDF entry, the file path under downloads/press/ (for
-              example downloads/press/2026-08-15-headline.pdf). For an
-              external entry, the full https address of the story.
+              Click here and upload the PDF. It is stored in
+              downloads/press/ automatically. Leave this empty for an
+              external link and fill in the Website link below instead.
+          - name: external_url
+            label: Website link
+            type: string
+            pattern: "^https://.*"
+            description: >-
+              Only for "Link to another website" items. Paste the full
+              address, starting with https. Leave empty for PDF items.

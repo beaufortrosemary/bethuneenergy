@@ -24,6 +24,9 @@
   function renderRow(item, showSummary) {
     var row = el("div", "news-row");
 
+    var href = (item.link_type === "external" && item.external_url)
+      ? item.external_url : item.url;
+
     var left = el("div", "news-date");
     left.appendChild(el("span", null, formatDate(item.date)));
     left.appendChild(el("span", "news-tag", item.category));
@@ -32,7 +35,7 @@
     var body = el("div");
     var h3 = el("h3");
     var titleLink = el("a", null, item.title);
-    titleLink.href = item.url;
+    titleLink.href = href;
     if (item.link_type === "external") {
       titleLink.rel = "noopener";
     }
@@ -46,7 +49,7 @@
     var links = el("div", "news-links");
     var action = el("a", null,
       item.link_type === "external" ? "See the story" : "Download PDF");
-    action.href = item.url;
+    action.href = href;
     if (item.link_type === "external") action.rel = "noopener";
     links.appendChild(action);
     body.appendChild(links);
@@ -71,8 +74,12 @@
   }
 
   fetch("news/news.json", { cache: "no-cache" })
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
+    .then(function (res) { return res.text(); })
+    .then(function (text) {
+      // An empty or blank file (for example after every item is removed
+      // in the CMS) is treated as "no items" rather than an error.
+      var data = {};
+      if (text && text.trim()) data = JSON.parse(text);
       var items = (data.items || []).slice().sort(function (a, b) {
         return a.date < b.date ? 1 : -1;
       });

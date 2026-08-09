@@ -25,9 +25,9 @@ The old GitHub issue-form workflow files are still in `.github/` for now, but Pa
 1. Open the Pages CMS link and sign in with GitHub.
 2. Open the News entry and click Add item under News items.
 3. Fill in the date, category, title, and summary.
-4. Choose the link type:
-   - For a PDF, upload the file to the media library (it lands in `downloads/press/`), then set the URL field to that file's path, for example `downloads/press/2026-08-15-headline.pdf`, and set Link type to `pdf`.
-   - For a story on another website, set Link type to `external` and paste the full address, starting with `https`, into the URL field.
+4. Choose the link type and add the link:
+   - **PDF file** (the usual case): in the **PDF file** field, click and upload the PDF. It is stored in `downloads/press/` automatically, so there are no paths to type.
+   - **Link to another website**: leave the PDF field empty and paste the full address, starting with `https`, into the **Website link** field.
 5. Save. Pages CMS commits the change to the repository, and Netlify redeploys the site within a minute or two.
 
 ## The news.json entry format
@@ -45,7 +45,20 @@ To publish something yourself without Pages CMS, edit `news/news.json` directly 
 }
 ```
 
-For an external story, set `link_type` to `external` and `url` to the full address. The site shows "See the story" for external items and "Download PDF" for uploads.
+For an external story, set `link_type` to `external`, leave `url` empty, and put the full address in an `external_url` field:
+
+```json
+{
+  "date": "2026-08-15",
+  "category": "In the news",
+  "title": "Headline here",
+  "summary": "One or two sentences.",
+  "link_type": "external",
+  "external_url": "https://www.example.com/story"
+}
+```
+
+The site shows "See the story" for external items and "Download PDF" for uploads.
 
 ## Fixing or removing a published item
 
@@ -53,5 +66,6 @@ Edit `news/news.json`: correct the fields, or delete the entry's block, and comm
 
 ## Notes
 
-- The three entries currently in `news/news.json` are placeholders with no PDFs behind them. Replace them with the real releases before launch, or empty the `items` array to `[]`.
+- The top entry in `news/news.json` is a clearly labeled DEMO item with a working sample PDF (`downloads/press/demo-news-item.pdf`), there so you can test the layout and the Download PDF button. Delete it (and its PDF) before launch.
+- The other three entries in `news/news.json` are placeholders with no PDFs behind them. Replace them with the real releases before launch, or empty the `items` array to `[]`.
 - Category options live in `.pages.yml` (the News editor) and, for the older issue form, in `.github/ISSUE_TEMPLATE/news-item.yml`. The site itself renders whatever category string an entry carries.

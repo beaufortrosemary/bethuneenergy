@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "date": "2026-08-09",
+      "category": "Press release",
+      "title": "DEMO — Sample news item (safe to delete before launch)",
+      "summary": "This is a demonstration entry for testing the newsroom layout and the Download PDF button. Delete it in Pages CMS (or from news/news.json) before the site goes live.",
+      "link_type": "pdf",
+      "url": "downloads/press/demo-news-item.pdf"
+    }
+  ]
+}
