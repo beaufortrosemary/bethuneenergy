@@ -1,0 +1,69 @@
+name: Add a news item
+description: Submit a press release, permit filing, report, or community update for the website.
+title: "News: "
+labels: ["news-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill out this form to add an item to the Bethune Energy newsroom.
+        After you submit, Nicolas reviews it and publishes it to the site.
+        Replace "News: " in the title box above with a short version of your headline.
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: The date for this item, written as YYYY-MM-DD.
+      placeholder: "2026-08-15"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Press release
+        - Permit filing
+        - Report or study
+        - Community meeting
+        - In the news
+    validations:
+      required: true
+  - type: input
+    id: headline
+    attributes:
+      label: Headline
+      description: The full headline shown on the website.
+      placeholder: "Beaufort Rosemary files air quality permit application"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences shown under the headline.
+      placeholder: "The filing begins formal environmental review of the proposed facility with state regulators."
+    validations:
+      required: true
+  - type: dropdown
+    id: link_type
+    attributes:
+      label: Link type
+      description: Upload a PDF below, or link to a story on another website.
+      options:
+        - Upload a PDF
+        - Link to another website
+    validations:
+      required: true
+  - type: textarea
+    id: attachment
+    attributes:
+      label: PDF attachment
+      description: If uploading a PDF, drag the file into this box and wait for the upload link to appear. Leave this box alone otherwise.
+      placeholder: Drag your PDF file here.
+  - type: input
+    id: external_url
+    attributes:
+      label: Website link
+      description: If linking to a story on another website, paste the full address here, starting with https. Leave blank otherwise.
+      placeholder: "https://www.example.com/story"

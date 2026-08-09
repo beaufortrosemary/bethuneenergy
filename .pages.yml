@@ -1,0 +1,52 @@
+media:
+  input: downloads/press
+  output: downloads/press
+
+content:
+  - name: news
+    label: News
+    type: file
+    path: news/news.json
+    fields:
+      - name: items
+        label: News items
+        type: object
+        list: true
+        fields:
+          - name: date
+            label: Date
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: category
+            label: Category
+            type: select
+            options:
+              values:
+                - Press release
+                - Permit filing
+                - Report or study
+                - Community meeting
+                - In the news
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: summary
+            label: Summary
+            type: text
+            required: true
+          - name: link_type
+            label: Link type
+            type: select
+            options:
+              values:
+                - pdf
+                - external
+          - name: url
+            label: URL
+            type: string
+            description: >-
+              For a PDF entry, the file path under downloads/press/ (for
+              example downloads/press/2026-08-15-headline.pdf). For an
+              external entry, the full https address of the story.

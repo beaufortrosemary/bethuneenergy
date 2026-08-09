@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "date": "2026-03-04",
+      "category": "Press release",
+      "title": "Beaufort Rosemary files air quality permit application",
+      "summary": "The filing begins formal environmental review of the proposed facility with state regulators.",
+      "link_type": "pdf",
+      "url": "downloads/press/2026-03-04-air-quality-permit-application.pdf"
+    },
+    {
+      "date": "2026-02-11",
+      "category": "Community meeting",
+      "title": "Bethune Energy to host community open house",
+      "summary": "Residents are invited to meet the project team, review site plans, and ask questions.",
+      "link_type": "pdf",
+      "url": "downloads/press/2026-02-11-community-open-house.pdf"
+    },
+    {
+      "date": "2026-01-22",
+      "category": "Press release",
+      "title": "Kershaw County site selected for proposed facility",
+      "summary": "Existing natural gas pipeline and electric transmission infrastructure drove the siting decision.",
+      "link_type": "pdf",
+      "url": "downloads/press/2026-01-22-site-selected.pdf"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+name: Publish news item
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  publish:
+    if: github.event.label.name == 'publish' && contains(github.event.issue.labels.*.name, 'news-submission')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse the submission
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || "";
+
+            function section(label) {
+              const re = new RegExp("### " + label + "\\s+([\\s\\S]*?)(?=\\n### |$)");
+              const m = body.match(re);
+              return m ? m[1].trim() : "";
+            }
+
+            const date = section("Date");
+            const category = section("Category");
+            const headline = section("Headline");
+            const summary = section("Summary").replace(/\s+/g, " ").trim();
+            const linkTypeRaw = section("Link type");
+            const attachment = section("PDF attachment");
+            const externalUrl = section("Website link").replace(/_No response_/i, "").trim();
+
+            const errors = [];
+
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+              errors.push("The date must be written as YYYY-MM-DD, for example 2026-08-15.");
+            }
+            if (!headline) errors.push("The headline is missing.");
+            if (!summary || /_No response_/i.test(summary)) errors.push("The summary is missing.");
+
+            const isExternal = /another website/i.test(linkTypeRaw);
+            let pdfUrl = "";
+
+            if (isExternal) {
+              if (!/^https:\/\//.test(externalUrl)) {
+                errors.push("A website link starting with https is required when the link type is set to another website.");
+              }
+            } else {
+              const m = attachment.match(/https:\/\/github\.com\/user-attachments\/files\/\S+|https:\/\/github\.com\/[^\s)]+\/files\/\d+\/\S+/);
+              if (!m) {
+                errors.push("No PDF upload link was found in the attachment box. Drag the PDF into the box and wait for the link to appear before submitting.");
+              } else {
+                pdfUrl = m[0].replace(/[)\]"']+$/, "");
+              }
+            }
+
+            if (errors.length > 0) {
+              const lines = errors.map(e => "- " + e).join("\n");
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: "This item could not be published yet:\n\n" + lines + "\n\nEdit the issue to fix the item above, then remove and re-add the publish label."
+              });
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                name: "publish"
+              }).catch(() => {});
+              core.setFailed("Submission failed validation.");
+              return;
+            }
+
+            const slug = headline.toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-+|-+$/g, "")
+              .slice(0, 60);
+
+            core.setOutput("date", date);
+            core.setOutput("category", category);
+            core.setOutput("headline", headline);
+            core.setOutput("summary", summary);
+            core.setOutput("link_type", isExternal ? "external" : "pdf");
+            core.setOutput("external_url", externalUrl);
+            core.setOutput("pdf_url", pdfUrl);
+            core.setOutput("slug", slug);
+
+      - name: Download the PDF
+        if: steps.parse.outputs.link_type == 'pdf'
+        run: |
+          mkdir -p downloads/press
+          DEST="downloads/press/${{ steps.parse.outputs.date }}-${{ steps.parse.outputs.slug }}.pdf"
+          curl -sSL -o "$DEST" "${{ steps.parse.outputs.pdf_url }}"
+          if ! file "$DEST" | grep -qi 'pdf'; then
+            echo "Downloaded file is not a PDF" >&2
+            exit 1
+          fi
+          echo "DEST=$DEST" >> "$GITHUB_ENV"
+
+      - name: Update news.json
+        env:
+          ITEM_DATE: ${{ steps.parse.outputs.date }}
+          ITEM_CATEGORY: ${{ steps.parse.outputs.category }}
+          ITEM_HEADLINE: ${{ steps.parse.outputs.headline }}
+          ITEM_SUMMARY: ${{ steps.parse.outputs.summary }}
+          ITEM_LINK_TYPE: ${{ steps.parse.outputs.link_type }}
+          ITEM_EXTERNAL_URL: ${{ steps.parse.outputs.external_url }}
+        run: |
+          node <<'EOF'
+          const fs = require("fs");
+          const path = "news/news.json";
+          const data = JSON.parse(fs.readFileSync(path, "utf8"));
+          const item = {
+            date: process.env.ITEM_DATE,
+            category: process.env.ITEM_CATEGORY,
+            title: process.env.ITEM_HEADLINE,
+            summary: process.env.ITEM_SUMMARY,
+            link_type: process.env.ITEM_LINK_TYPE,
+            url: process.env.ITEM_LINK_TYPE === "external"
+              ? process.env.ITEM_EXTERNAL_URL
+              : process.env.DEST
+          };
+          data.items.push(item);
+          data.items.sort((a, b) => (a.date < b.date ? 1 : -1));
+          fs.writeFileSync(path, JSON.stringify(data, null, 2) + "\n");
+          EOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "news-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add news/news.json downloads/press
+          git commit -m "Publish news item: ${{ steps.parse.outputs.headline }} (#${{ github.event.issue.number }})"
+          git push
+
+      - name: Confirm and close
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: "Published. The item will appear at https://bethuneenergy.com/news.html within a couple of minutes."
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              state: "closed"
+            });
