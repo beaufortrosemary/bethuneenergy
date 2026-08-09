@@ -3,5 +3,5 @@
 # Dylan adds and edits news items. Update the target URL below if the
 # Pages CMS address is different (copy it from the browser address bar
 # while viewing the newsroom in Pages CMS).
-/admin    https://app.pagescms.org/nicolaspratt/bethuneenergy/main    302
-/admin/*  https://app.pagescms.org/nicolaspratt/bethuneenergy/main    302
+/admin    https://app.pagescms.org/beaufortrosemary/bethuneenergy/main    302
+/admin/*  https://app.pagescms.org/beaufortrosemary/bethuneenergy/main    302
