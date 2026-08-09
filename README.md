@@ -15,8 +15,8 @@ Static site for bethuneenergy.com. Netlify hosts the site and deploys it automat
    - Go to pagescms.org and sign in with GitHub.
    - Authorize Pages CMS for the `bethuneenergy` repository and open it. The `.pages.yml` file in this repository defines the News editor and the PDF media library (`downloads/press/`).
 4. Invite Dylan.
-   - On GitHub, go to Settings, then Collaborators, and invite Dylan by email so he can edit through Pages CMS.
-   - Once he accepts, send him the Pages CMS link for the repository.
+   - In Pages CMS, open this project and invite Dylan by his email address. He receives a passwordless magic-link login and can edit the newsroom without a GitHub account. (Per-user permissions for email-invited editors are limited for now, so he gets broad edit access to the project's content, which is fine here.)
+   - Alternative: add him as a GitHub collaborator with the Write role under the repo's Settings, then Collaborators. He then signs in to Pages CMS with his own GitHub account.
 
 ## How Dylan adds an item
 
