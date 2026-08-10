@@ -13,20 +13,16 @@ content:
         type: object
         list:
           collapsible:
-            summary: "{date} — {title}  ·  {status}"
+            summary: "{date} — {title}"
         fields:
-          - name: status
-            label: Status
-            type: select
-            default: Published
-            options:
-              values:
-                - Published
-                - Draft
+          - name: published
+            label: Published (ON = live on the website · OFF = hidden draft)
+            type: boolean
+            default: true
             description: >-
-              "Published" shows the item on the public website.
-              "Draft" saves your work but keeps it hidden from the
-              website until you switch it back to Published.
+              Leave this ON to publish the item on the public website.
+              Switch it OFF to save your work as a hidden draft that is
+              not shown on the site. New items are published by default.
           - name: date
             label: Date
             type: date
