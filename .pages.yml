@@ -11,16 +11,22 @@ content:
       - name: items
         label: News items
         type: object
-        list: true
+        list:
+          collapsible:
+            summary: "{date} — {title}  ·  {status}"
         fields:
-          - name: draft
-            label: Draft (hide from the website)
-            type: boolean
-            default: false
+          - name: status
+            label: Status
+            type: select
+            default: Published
+            options:
+              values:
+                - Published
+                - Draft
             description: >-
-              Turn this ON to keep the item hidden from the public
-              website while you work on it. Turn it OFF and save to
-              publish. Items are published by default.
+              "Published" shows the item on the public website.
+              "Draft" saves your work but keeps it hidden from the
+              website until you switch it back to Published.
           - name: date
             label: Date
             type: date
