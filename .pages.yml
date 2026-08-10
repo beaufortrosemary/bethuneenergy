@@ -7,6 +7,11 @@ content:
     label: News
     type: file
     path: news/news.json
+    # Lock the file so editors cannot delete or rename it from the CMS;
+    # they can still add, edit, and remove individual news items.
+    operations:
+      delete: false
+      rename: false
     fields:
       - name: items
         label: News items
