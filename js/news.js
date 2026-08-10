@@ -80,7 +80,11 @@
       // in the CMS) is treated as "no items" rather than an error.
       var data = {};
       if (text && text.trim()) data = JSON.parse(text);
-      var items = (data.items || []).slice().sort(function (a, b) {
+      // Items flagged as draft in the CMS are hidden from the public
+      // site. Items without the flag are treated as published.
+      var items = (data.items || []).filter(function (item) {
+        return !item.draft;
+      }).sort(function (a, b) {
         return a.date < b.date ? 1 : -1;
       });
       renderInto("news-latest", items, 3, true);

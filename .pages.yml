@@ -13,6 +13,14 @@ content:
         type: object
         list: true
         fields:
+          - name: draft
+            label: Draft (hide from the website)
+            type: boolean
+            default: false
+            description: >-
+              Turn this ON to keep the item hidden from the public
+              website while you work on it. Turn it OFF and save to
+              publish. Items are published by default.
           - name: date
             label: Date
             type: date
