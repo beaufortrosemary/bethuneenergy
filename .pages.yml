@@ -65,9 +65,12 @@ content:
             options:
               extensions: [pdf]
             description: >-
-              Click here and upload the PDF. It is stored in
-              downloads/press/ automatically. Leave this empty for an
-              external link and fill in the Website link below instead.
+              Click here to upload the PDF (it is stored in
+              downloads/press/ automatically), or pick one already in
+              the library. PDFs must be under about 4.5 MB — if yours is
+              larger, compress it first or send it to Nicolas to upload
+              for you. Leave this empty for an external link and fill in
+              the Website link below instead.
           - name: external_url
             label: Website link
             type: string
