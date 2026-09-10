@@ -64,6 +64,6 @@ Edit `news/news.json`: correct the fields, or delete the entry's block, and comm
 
 ## Notes
 
-- `news/news.json` currently holds a single clearly labeled DEMO item with a working sample PDF (`downloads/press/demo-news-item.pdf`), there so you can test the layout and the Download PDF button. Delete it (and its PDF) before launch, then add the real releases.
+- Pages CMS limits uploads to about 4.5 MB per file. For a larger PDF (for example a full study or report), add it to `downloads/press/` directly — the easiest way is GitHub's **Add file → Upload files** on that folder, committed to `main`. It then appears automatically in the News editor's PDF file picker, where the editor selects it instead of uploading.
 - If every item is removed, the newsroom simply shows "No announcements have been posted yet." An empty or `{ "items": [] }` file is handled gracefully.
 - Category options live in `.pages.yml` (the News editor). The site itself renders whatever category string an entry carries.
