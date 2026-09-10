@@ -18,7 +18,7 @@ content:
         type: object
         list:
           collapsible:
-            summary: "{date} — {title}"
+            summary: "{date} · {title}"
         fields:
           - name: published
             label: Published (ON = live on the website · OFF = hidden draft)
@@ -67,7 +67,7 @@ content:
             description: >-
               Click here to upload the PDF (it is stored in
               downloads/press/ automatically), or pick one already in
-              the library. PDFs must be under about 4.5 MB — if yours is
+              the library. PDFs must be under about 4.5 MB. If yours is
               larger, compress it first or send it to Nicolas to upload
               for you. Leave this empty for an external link and fill in
               the Website link below instead.
